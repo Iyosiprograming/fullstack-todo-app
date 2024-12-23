@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: white;
+        }
+        .login-container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 350px;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 15px;
+            border: 1px solid #444444;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            background-color: #333333;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #6200ea;
+            color: #ffffff;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <div class="password-container">
+            <input type="password" id="password" placeholder="Password">
+            <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+        </div>
+        <button type="button" onclick="login()">Login</button>
+        <p>don't have an account? <a href="register.html">Register</a></p>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.querySelector('.toggle-password');
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordToggle.textContent = "👁️"; // Change icon to indicate the password is visible
+            } else {
+                passwordInput.type = "password";
+                passwordToggle.textContent = "👁️"; // Change icon to indicate the password is hidden
+            }
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === 'admin' && password === 'password') {
+                alert('Login successful');
+            } else {
+                alert('Invalid credentials');
+            }
+        }
+    </script>
+</body>
+</html>

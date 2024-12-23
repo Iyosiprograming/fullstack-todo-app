@@ -1,0 +1,54 @@
+/todo-app
+│
+├── /backend                   # Backend folder (Express and MongoDB)
+│   ├── /controllers            # Controllers for handling routes (login, register, tasks)
+│   │   ├── authController.js   # Logic for registration, login, authentication
+│   │   └── taskController.js   # Logic for managing tasks (add, edit, delete)
+│   │
+│   ├── /models                 # Models (e.g., User, Task)
+│   │   ├── userModel.js        # User schema (for registration, login)
+│   │   └── taskModel.js        # Task schema (for To-Do tasks)
+│   │
+│   ├── /routes                 # API routes for the app (login, register, tasks)
+│   │   ├── authRoutes.js       # Routes for login and registration
+│   │   └── taskRoutes.js       # Routes for task management
+│   │
+│   ├── /middlewares            # Middlewares (e.g., authentication, validation)
+│   │   └── authMiddleware.js   # Middleware for protecting routes, validating tokens
+│   │
+│   ├── /config                 # Configuration files (e.g., database, server settings)
+│   │   └── db.js               # MongoDB connection setup
+│   │
+│   ├── /utils                  # Utility functions (e.g., password hashing, JWT)
+│   │   └── authUtils.js        # Utility functions for hashing passwords and creating JWT
+│   │
+│   ├── server.js               # Express server and middleware setup
+│   ├── .env                    # Environment variables (e.g., database connection, JWT secret)
+│   └── package.json            # Project dependencies and scripts (e.g., npm start)
+│
+├── /frontend                  # Frontend folder (HTML, CSS, JS)
+│   ├── /assets                 # Static assets (images, fonts, etc.)
+│   ├── /css                    # Stylesheets
+│   │   ├── style.css           # Main stylesheet for the app
+│   │   └── login.css           # Stylesheet for login page
+│   ├── /js                     # JavaScript files for interactivity (AJAX, form submission)
+│   │   ├── app.js              # Main JavaScript for handling tasks, login, and registration
+│   │   └── api.js              # API calls to the backend (e.g., login, register, tasks)
+│   ├── /views                  # HTML views (login, register, todo list)
+│   │   ├── login.html          # Login page
+│   │   ├── register.html       # Registration page
+│   │   └── index.html          # Main To-Do list page
+│   └── /images                 # Public images (logos, icons, etc.)
+│
+├── /public                    # Public folder (for static content)
+│   ├── /index.html             # Entry point to your frontend (if using separate backend and frontend)
+│   ├── /css                    # Compiled CSS (if using a CSS pre-processor like SCSS)
+│   ├── /js                     # Compiled JS (if using Webpack/Babel for JS)
+│   └── /images                 # Images for the website (logo, background)
+│
+└── /tests                     # Test files (for backend and frontend)
+    ├── /backend                # Tests for backend routes and logic
+    │   ├── auth.test.js        # Tests for authentication (login, register)
+    │   └── task.test.js        # Tests for task-related routes
+    └── /frontend               # Tests for frontend (if using testing libraries like Jest)
+        └── app.test.js         # Tests for frontend functionality (task management)

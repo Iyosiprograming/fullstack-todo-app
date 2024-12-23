@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f2f5;
+    }
+    .navbar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .hamburger {
+      cursor: pointer;
+      font-size: 24px;
+      border: none;
+      background: none;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 20px;
+    }
+    .menu {
+      display: none;
+      background-color: #f8f9fa;
+      padding: 10px 20px;
+      list-style-type: none;
+      margin: 0;
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      z-index: 1000;
+    }
+    .menu li {
+      margin: 10px 0;
+    }
+    .menu a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .menu a:hover {
+      text-decoration: underline;
+    }
+    .todo-container {
+      text-align: center;
+      margin-top: 100px;
+    }
+    .todo-list {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      width: 300px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .todo-list h4 {
+      margin: 0 0 10px 0;
+    }
+    .todo-list input {
+      width: calc(100% - 50px);
+      padding: 8px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .todo-list button {
+      padding: 8px 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .todo-list button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <h1>Welcome, User!</h1>
+  </div>
+  <ul class="menu" id="menu">
+    <li><a href="#">Home</a></li>
+    <li><a href="./profile.html">Profile</a></li>
+    <li><a href="#">Todos</a></li>
+    <li><a href="#">Logout</a></li>
+  </ul>
+
+  <div class="todo-container">
+    <h3>Add Todo</h3>
+    <button class="add-icon" onclick="showTodoList()">➕</button>
+    <div class="todo-list" id="todoList">
+      <h4>Your Todo List</h4>
+      <input type="text" id="todoInput" placeholder="Enter a todo" style="width: 80%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      <button onclick="addTodo()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Add</button>
+      <ul id="todoItems" style="margin-top: 20px; padding: 0; list-style-type: none;"></ul>
+        </div>
+      </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function showTodoList() {
+      const todoList = document.getElementById('todoList');
+      todoList.style.display = todoList.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addTodo() {
+      const todoInput = document.getElementById('todoInput');
+      const todoItems = document.getElementById('todoItems');
+      const todoText = todoInput.value.trim();
+      if (todoText) {
+        const li = document.createElement('li');
+        li.textContent = todoText;
+        todoItems.appendChild(li);
+        todoInput.value = '';
+      }
+    }
+  </script>
+</body>
+</html>

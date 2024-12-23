@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f2f5;
+    }
+    .navbar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .hamburger {
+      cursor: pointer;
+      font-size: 30px;
+      border: none;
+      background: none;
+      color: white;
+      position: absolute;
+      left: 20px;
+    }
+    .menu {
+      display: none;
+      background-color: #f8f9fa;
+      padding: 10px 20px;
+      list-style-type: none;
+      margin: 0;
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      z-index: 1000;
+    }
+    .menu li {
+      margin: 10px 0;
+    }
+    .menu a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .menu a:hover {
+      text-decoration: underline;
+    }
+    .profile-container {
+      margin-top: 80px;
+      width: 90%;
+      max-width: 500px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .profile-container h2 {
+      margin-bottom: 20px;
+    }
+    .profile-container p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .profile-container button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .profile-container button:hover {
+      background-color: #0056b3;
+    }
+    .edit-form {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+    }
+    .edit-form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 14px;
+    }
+    .edit-form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .edit-form button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .edit-form button:hover {
+      background-color: #218838;
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <h1>Profile Page</h1>
+  </div>
+  <ul class="menu" id="menu">
+    <li><a href="../Dashboard/dashboard.html">Home</a></li>
+    <li><a href="../profile/profile.html">Profile</a></li>
+    <li><a href="../mytodos/TodoLists.html">Todos</a></li>
+    <li><a href="#">Logout</a></li>
+  </ul>
+
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <p><strong>Name:</strong> John Doe</p>
+    <p><strong>Email:</strong> john.doe@example.com</p>
+    <button onclick="toggleEditForm()">Edit</button>
+
+    <div class="edit-form" id="editForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" value="John Doe">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" value="john.doe@example.com">
+
+      <button onclick="saveChanges()">Save</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleEditForm() {
+      const editForm = document.getElementById('editForm');
+      editForm.style.display = editForm.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function saveChanges() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // Update profile text
+      document.querySelector('.profile-container p:nth-child(2)').innerHTML = `<strong>Name:</strong> ${name}`;
+      document.querySelector('.profile-container p:nth-child(3)').innerHTML = `<strong>Email:</strong> ${email}`;
+
+      // Hide edit form
+      toggleEditForm();
+    }
+  </script>
+</body>
+</html>
