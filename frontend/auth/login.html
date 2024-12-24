@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="shortcut icon" href="../images/user.png" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,6 +58,7 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
+        <p id="indicator"></p>
         <input type="text" id="username" placeholder="Username">
         <div class="password-container">
             <input type="password" id="password" placeholder="Password">
@@ -73,21 +75,46 @@
 
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                passwordToggle.textContent = "👁️"; // Change icon to indicate the password is visible
+                passwordToggle.textContent = "👁️"; 
             } else {
                 passwordInput.type = "password";
-                passwordToggle.textContent = "👁️"; // Change icon to indicate the password is hidden
-            }
+                passwordToggle.textContent = "👁️";          }
         }
 
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            if (username === 'admin' && password === 'password') {
-                alert('Login successful');
-            } else {
-                alert('Invalid credentials');
+            const indicator = document.getElementById('indicator');
+            // Perform login logic here
+
+            if(!username || !password) {
+                indicator.textContent = 'All fields are required';
+                indicator.style.color = 'red';
+                return;
             }
+            fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    alert('Login successful');
+                    indicator.textContent = 'Login successful';
+                    indicator.style.color = 'green';
+                } else {
+                    alert('Login failed');
+                    indicator.textContent = 'Login failed';
+                    indicator.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     </script>
 </body>

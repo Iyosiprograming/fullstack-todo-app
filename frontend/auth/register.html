@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="shortcut icon" href="../images/register.png" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,6 +59,7 @@
 
 <div class="register-container">
     <h2>Register</h2>
+    <p id="indicator"></p>
     <input type="text" id="username" placeholder="Username">
     <div class="password-container">
         <input type="password" id="password" placeholder="Password">
@@ -82,9 +84,80 @@
     }
 
     function register() {
-        // Implement registration logic
-        alert('Register button clicked');
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const indicator = document.getElementById('indicator');
+
+    // Clear any previous indicator messages
+    indicator.textContent = '';
+
+    // Regular expression for password validation
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    // Basic validation for empty fields
+    if (!username || !password || !confirmPassword) {
+        indicator.textContent = 'All fields are required';
+        indicator.style.color = 'red';
+        return;
     }
+
+    // Password validation
+    if (!passwordRegex.test(password)) {
+        indicator.textContent = 'Password must contain at least one uppercase letter, one number, and one special character';
+        indicator.style.color = 'red';
+        return;
+    }
+
+    // Password and confirm password match check
+    if (password !== confirmPassword) {
+        indicator.textContent = 'Passwords do not match';
+        indicator.style.color = 'red';
+        return;
+    }
+
+    // Password length check
+    if (password.length < 8) {
+        indicator.textContent = 'Password must be at least 8 characters long';
+        indicator.style.color = 'red';
+        return;
+    }
+
+    console.log('Username:', username);
+    console.log('Password:', password);
+    console.log('Confirm Password:', confirmPassword);
+
+    // Send the registration request
+    fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+
+            if (data.success) {
+                indicator.textContent = 'Registration successful';
+                indicator.style.color = 'green';
+            } else {
+                indicator.textContent = data.message || 'Registration failed';
+                indicator.style.color = 'red';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            indicator.textContent = 'An error occurred during registration';
+            indicator.style.color = 'red';
+        });
+}
 </script>
 
 </body>
