@@ -10,6 +10,7 @@ const register = async (req, res) => {
         if (existingUser) {
             return res.status(409).json({ message: 'User already exists' });
         }
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
             email,
@@ -26,21 +27,26 @@ const register = async (req, res) => {
 
 // Login a user
 const login = async (req, res) => {
-    try{
-        const {password,username} = req.body;
-        const user = await User.findOne({username});
-        if(!user){
-            return res.status(404).json({message: 'User not found'});
+    try {
+        const { password, username } = req.body;
+        const user = await User.findOne({ username });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
+        
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if(!isPasswordCorrect){
-            return res.status(400).json({message: 'Invalid credentials'});
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
+        
         req.session.user = user;
-        res.status(200).json({message: 'Login successful'});
-    }catch(error){
+
+        // Redirect to YouTube after successful login
+        res.redirect('dashboard.html');
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Internal server error'});
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 

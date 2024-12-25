@@ -61,6 +61,7 @@
     <h2>Register</h2>
     <p id="indicator"></p>
     <input type="text" id="username" placeholder="Username">
+    <input type="text" id="email" placeholder="Email">
     <div class="password-container">
         <input type="password" id="password" placeholder="Password">
         <span class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</span>
@@ -86,6 +87,7 @@
     function register() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const indicator = document.getElementById('indicator');
 
@@ -93,21 +95,21 @@
     indicator.textContent = '';
 
     // Regular expression for password validation
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-
+/*     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+ */
     // Basic validation for empty fields
-    if (!username || !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword || !email) {
         indicator.textContent = 'All fields are required';
         indicator.style.color = 'red';
         return;
     }
 
     // Password validation
-    if (!passwordRegex.test(password)) {
+    /* if (!passwordRegex.test(password)) {
         indicator.textContent = 'Password must contain at least one uppercase letter, one number, and one special character';
         indicator.style.color = 'red';
         return;
-    }
+    } */
 
     // Password and confirm password match check
     if (password !== confirmPassword) {
@@ -117,48 +119,46 @@
     }
 
     // Password length check
-    if (password.length < 8) {
+    /* if (password.length < 8) {
         indicator.textContent = 'Password must be at least 8 characters long';
         indicator.style.color = 'red';
         return;
-    }
+    } */
 
     console.log('Username:', username);
     console.log('Password:', password);
+    console.log('email:', email);
     console.log('Confirm Password:', confirmPassword);
 
+
     // Send the registration request
-    fetch('http://localhost:3000/auth/register', {
+    fetch('http://localhost:3000/api/auth/register',{
         method: 'POST',
-        headers: {
+        headers:{
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({username, password, email})
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-
-            if (data.success) {
-                indicator.textContent = 'Registration successful';
-                indicator.style.color = 'green';
-            } else {
-                indicator.textContent = data.message || 'Registration failed';
-                indicator.style.color = 'red';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            indicator.textContent = 'An error occurred during registration';
-            indicator.style.color = 'red';
-        });
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if(data.success){
+            indicator.textContent = data.message || 'Registration successful';
+            indicator.style.color = 'green';
+        }else{
+            indicator.textContent = data.message || 'Registration failed';
+            indicator.style.color = 'green';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        indicator.textContent = 'An error occurred during registration';
+        indicator.style.color = 'red';
+    });
+    
 }
 </script>
 
 </body>
 </html>
+
