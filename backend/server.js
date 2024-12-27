@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const taskRouter = require('./router/taskrouter');
 const authRouter = require('./router/authrouter');
 
-
+// Load environment variables
 dotenv.config();
 
 const port = process.env.PORT || 5000;
@@ -27,7 +27,7 @@ app.use(expressSession({
 app.use(cors());
 app.use(express.json());
 
-
+// Connect to MongoDB
 connectDB();
 
 app.use('/api/task', taskRouter);

@@ -85,30 +85,19 @@
     .todo-list h4 {
       margin: 0 0 10px 0;
     }
-    .todo-list input {
-      width: calc(100% - 50px);
-      padding: 8px;
-      margin-right: 10px;
+    #todoItems li {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f8f9fa;
+      border-radius: 4px;
       border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .todo-list button {
-      padding: 8px 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .todo-list button:hover {
-      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
   <div class="navbar">
     <button class="hamburger" onclick="toggleMenu()">☰</button>
-    <h1>Welcome</h1>
+    <h1>Welcome <span id="username"></span></h1>
   </div>
   <ul class="menu" id="menu">
     <li><a href="#">Home</a></li>
@@ -122,13 +111,33 @@
     <button class="add-icon" onclick="showTodoList()">➕</button>
     <div class="todo-list" id="todoList">
       <h4>Your Todo List</h4>
-      <input type="text" id="todoInput" placeholder="Enter a todo" style="width: 80%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
-      <button onclick="addTodo()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Add</button>
-      <ul id="todoItems" style="margin-top: 20px; padding: 0; list-style-type: none;"></ul>
-        </div>
-      </div>
+      <input type="text" id="todoInput" placeholder="Enter a todo">
+      <button onclick="addTodo()">Add</button>
+      <ul id="todoItems"></ul>
+    </div>
+  </div>
 
   <script>
+    const usernameElement = document.getElementById('username');
+
+    // Authenticate the user and fetch the username
+    fetch('http://localhost:3000/auth', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          usernameElement.textContent = data.username;
+        } else {
+          alert('Authentication failed. Please log in again.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+
     function toggleMenu() {
       const menu = document.getElementById('menu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
@@ -148,6 +157,16 @@
         li.textContent = todoText;
         todoItems.appendChild(li);
         todoInput.value = '';
+        fetch('http://localhost:3000/todos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ todo: todoText }),
+        })
+          .then(response => response.json())
+          .then(data => console.log('Todo saved:', data))
+          .catch(error => console.error('Error:', error));
       }
     }
   </script>

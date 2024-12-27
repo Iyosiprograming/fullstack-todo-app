@@ -1,3 +1,4 @@
+/*************  ✨ Codeium Command 🌟  *************/
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,16 +150,17 @@
 
   <div class="profile-container">
     <h2>Your Profile</h2>
-    <p><strong>Name:</strong> John Doe</p>
-    <p><strong>Email:</strong> john.doe@example.com</p>
+    <p><strong>Name:</strong> <span id="name"></span></p>
+    <p><strong>Email:</strong> <span id="email"></span></p>
+    
     <button onclick="toggleEditForm()">Edit</button>
 
     <div class="edit-form" id="editForm">
       <label for="name">Name:</label>
-      <input type="text" id="name" value="John Doe">
+      <input type="text" id="nameInput" value="">
 
       <label for="email">Email:</label>
-      <input type="email" id="email" value="john.doe@example.com">
+      <input type="email" id="emailInput" value="">
 
       <button onclick="saveChanges()">Save</button>
     </div>
@@ -169,23 +171,72 @@
       const menu = document.getElementById('menu');
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
-
+  
     function toggleEditForm() {
       const editForm = document.getElementById('editForm');
       editForm.style.display = editForm.style.display === 'block' ? 'none' : 'block';
     }
-
+  
     function saveChanges() {
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-
-      // Update profile text
-      document.querySelector('.profile-container p:nth-child(2)').innerHTML = `<strong>Name:</strong> ${name}`;
-      document.querySelector('.profile-container p:nth-child(3)').innerHTML = `<strong>Email:</strong> ${email}`;
-
-      // Hide edit form
-      toggleEditForm();
+      const name = document.getElementById('nameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+  
+      if (!name || !email || !validateEmail(email)) {
+        alert('Please enter a valid name and email.');
+        return;
+      }
+  
+      fetch('http://localhost:3000/api/auth/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ name, email }),
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to update profile');
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            document.getElementById('name').textContent = name;
+            document.getElementById('email').textContent = email;
+            toggleEditForm();
+          } else {
+            alert('Error updating profile');
+          }
+        })
+        .catch(error => alert(`Error: ${error.message}`));
     }
+  
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+  
+    fetch('http://localhost:3000/api/auth/update', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch profile');
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          document.getElementById('name').textContent = data.name;
+          document.getElementById('email').textContent = data.email;
+        } else {
+          alert('Error fetching profile');
+        }
+      })
+      .catch(error => console.error(`Error: ${error.message}`));
   </script>
+  
 </body>
 </html>
+
